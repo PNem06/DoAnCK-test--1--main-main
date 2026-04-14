@@ -4,7 +4,7 @@ namespace App\Controllers\MonUkou;
 require_once __DIR__ . '/../../Models/MonUkou/Account.php';
 require_once __DIR__ . '/../../../Config/database.php';
 
-use App\Models\MonUkou\Account; // 
+use App\Models\MonUkou\Account; // 🔥 THÊM DÒNG NÀY
 class AccountController {
 
     public function showLogin() {
@@ -49,16 +49,17 @@ class AccountController {
     exit;
 }
 
-    public function login($db) {
-
+    public function login($db)
+{
     $user_input = $_POST['username'] ?? '';
     $pass_input = $_POST['password'] ?? '';
 
     if (empty($user_input) || empty($pass_input)) {
-        echo "Vui lòng nhập đầy đủ!";
+        echo "<div class='text-danger text-center mt-3'>Vui lòng nhập đầy đủ!</div>";
         return;
     }
 
+    // 🔥 Query
     $sql = "SELECT * FROM tbl_account WHERE Username = ? AND Password = ?";
     $stmt = $db->prepare($sql);
     $stmt->execute([$user_input, $pass_input]);
@@ -66,6 +67,7 @@ class AccountController {
 
     if ($userData) {
 
+        // 🔥 Lưu session object
         $_SESSION['user_obj'] = new Account(
             $userData['Account_ID'],
             $userData['Username'],
@@ -76,10 +78,13 @@ class AccountController {
             $userData['Img'] ?? 'default.png'
         );
 
-        if ($_SESSION['user_obj']->getRole() == 1) {
+        // 🔥 FIX QUAN TRỌNG: ép kiểu int + đảm bảo không bị lỗi header
+        $role = (int)$userData['Role'];
+
+        if ($role === 1) {
             header("Location: index.php?controller=admin&action=dashboard");
         } else {
-            header("Location: index.php");
+            header("Location: index.php?controller=home&action=index");
         }
         exit;
 
@@ -87,4 +92,4 @@ class AccountController {
         echo "<div class='text-danger text-center mt-3'>Sai tài khoản hoặc mật khẩu!</div>";
     }
 }
-    }
+}

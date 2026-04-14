@@ -30,47 +30,64 @@ try {
 
         // ================= ADMIN =================
         case 'admin':
-            require_once 'App/Controllers/MonUkou/AdminController.php';
-            $ctrl = new \App\Controllers\MonUkou\AdminController();
+                require_once 'App/Controllers/MonUkou/AdminController.php';
+                $ctrl = new \App\Controllers\MonUkou\AdminController();
 
-            if ($action === 'dashboard') {
-
-                // 🔥 CHẶN USER KHÔNG PHẢI ADMIN
+                // 🔥 CHẶN KHÔNG PHẢI ADMIN
                 if (!isset($_SESSION['user_obj']) || $_SESSION['user_obj']->getRole() != 1) {
                     header("Location: index.php");
                     exit;
                 }
 
-                $ctrl->dashboard();
-            }
-            break;
+                switch ($action) {
+                    case 'dashboard':
+                        $ctrl->dashboard();
+                        break;
+
+                    case 'addpost':
+                        require 'App/Views/Admin/addpost.php';
+                        break;
+
+                    case 'detailpost':
+                        require 'App/Views/Admin/detailpost.php';
+                        break;
+
+                    case 'editpost':
+                        require 'App/Views/Admin/editpost.php';
+                        break;
+
+                    default:
+                        $ctrl->dashboard();
+                        break;
+                }
+                break;
 
         // ================= ACCOUNT =================
         case 'account':
-            require_once 'App/Controllers/MonUkou/AccountController.php';
-            $ctrl = new \App\Controllers\MonUkou\AccountController();
+        require_once 'App/Controllers/MonUkou/AccountController.php';
+        $ctrl = new \App\Controllers\MonUkou\AccountController();
 
-            if ($action === 'login') {
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    $ctrl->login(Database::getInstance()->getConnection());
-                } else {
-                    $ctrl->showLogin();
-                }
+        if ($action === 'login') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $ctrl->login(Database::getInstance()->getConnection());
+            } else {
+                $ctrl->showLogin();
             }
+        }
 
-            elseif ($action === 'profile') {
-                $ctrl->profile();
-            }
+        elseif ($action === 'profile') {
+            $ctrl->profile();
+        }
 
-            elseif ($action === 'updateProfile') {   // 🔥 THÊM DÒNG NÀY
-                $ctrl->updateProfile();
-            }
+        elseif ($action === 'updateProfile') {   // 🔥 THÊM DÒNG NÀY
+            $ctrl->updateProfile();
+        }
 
-            elseif ($action === 'logout') {
-                $ctrl->logout();
-            }
+        elseif ($action === 'logout') {
+            $ctrl->logout();
+        }
 
-            break;
+        break;
 
         // ================= HOME =================
         case 'home':

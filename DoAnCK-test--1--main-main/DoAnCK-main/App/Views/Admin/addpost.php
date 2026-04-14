@@ -1,4 +1,14 @@
 <?php
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['user_obj'])) {
+    die("Bạn chưa đăng nhập hoặc mất session");
+}
+
+$accountId = $_SESSION['user_obj']->getId(); // hoặc property tùy class
 require_once __DIR__ . '/../../../Config/config.php';
 require_once __DIR__ . '/../../../Config/database.php';
 
@@ -51,15 +61,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $insertFields = ['New_Title', 'New_Description', 'New_Content', 'New_Img', 'New_Status', 'New_PublishDate', 'Account_ID'];
-        $insertValues = [
-            $news['New_Title'],
-            $news['New_Description'],
-            $news['New_Content'],
-            $news['New_Img'],
-            $news['New_Status'],
-            date('Y-m-d'),
-            1,
-        ];
+        $currentAccountId = $_SESSION['user_obj']->getId();
+
+            $insertValues = [
+                $news['New_Title'],
+                $news['New_Description'],
+                $news['New_Content'],
+                $news['New_Img'],
+                $news['New_Status'],
+                date('Y-m-d'),
+                $currentAccountId,
+            ];
 
         if (in_array('New_Category', $tableColumns, true)) {
             $insertFields[] = 'New_Category';
@@ -95,6 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $insertedId = $stmt->insert_id;
                 header('Location: index.php?controller=admin&action=detailpost&id=' . (int) $insertedId);
                 exit;
+            } else {
+                die("SQL ERROR: " . $stmt->error);
             }
 
             $error = 'Không thể lưu bài viết. Vui lòng thử lại.';

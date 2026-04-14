@@ -311,19 +311,19 @@ try {
                         </div>
 
                         <div class="d-grid gap-2">
-                            <a class="sidebar-link <?= $selectedFilter === 'all' ? 'active' : '' ?>" href="dashboard.php?filter=all">
+                            <a class="sidebar-link <?= $selectedFilter === 'all' ? 'active' : '' ?>" href="index.php?controller=admin&action=dashboard&filter=all">
                                 <i class="fas fa-chart-line"></i>
                                 <span>Tổng quan</span>
                             </a>
-                            <a class="sidebar-link <?= $selectedFilter === 'movie' ? 'active' : '' ?>" href="dashboard.php?filter=movie">
+                            <a class="sidebar-link <?= $selectedFilter === 'movie' ? 'active' : '' ?>" href="index.php?controller=admin&action=dashboard&filter=movie">
                                 <i class="fas fa-newspaper"></i>
                                 <span>Tin phim</span>
                             </a>
-                            <a class="sidebar-link <?= $selectedFilter === 'actor' ? 'active' : '' ?>" href="dashboard.php?filter=actor">
+                            <a class="sidebar-link <?= $selectedFilter === 'actor' ? 'active' : '' ?>" href="index.php?controller=admin&action=dashboard&filter=actor">
                                 <i class="fas fa-clapperboard"></i>
                                 <span>Tin diễn viên</span>
                             </a>
-                            <a class="sidebar-link <?= $selectedFilter === 'comments' ? 'active' : '' ?>" href="dashboard.php?filter=comments">
+                            <a class="sidebar-link <?= $selectedFilter === 'comments' ? 'active' : '' ?>" href="index.php?controller=admin&action=dashboard&filter=comments">
                                 <i class="fas fa-comments"></i>
                                 <span>Bình luận</span>
                             </a>
@@ -356,7 +356,7 @@ try {
                                     <h1 class="h3 fw-bold mb-2">Quản lý nội dung đồng bộ với giao diện trang chủ</h1>
                                     <p class="mb-0 opacity-75">Theo dõi nhanh tình trạng bài viết, danh mục và tương tác từ cùng một màn hình.</p>
                                 </div>
-                                <a class="btn btn-warning btn-lg rounded-pill px-4" href="addpost.php">
+                                <a class="btn btn-warning btn-lg rounded-pill px-4" href="index.php?controller=admin&action=addpost">
                                     <i class="fas fa-plus me-2"></i>Tạo bài viết
                                 </a>
                             </div>
@@ -462,7 +462,7 @@ try {
                                                         <span><i class="fas fa-hashtag me-1"></i>ID <?= (int) $comment['Comment_ID'] ?></span>
                                                     </div>
                                                     <div class="d-flex gap-2">
-                                                        <a href="detailpost.php?id=<?= (int) $comment['New_ID'] ?>" class="btn btn-outline-primary rounded-pill flex-fill">Xem tin</a>
+                                                        <a href="index.php?controller=admin&action=detailpost&id=<?= (int)$comment['New_ID'] ?>" class="btn btn-outline-primary rounded-pill flex-fill">Xem tin</a>
                                                     </div>
                                                 </div>
                                             </article>
@@ -521,10 +521,10 @@ try {
                                                     </div>
 
                                                     <div class="d-flex gap-2">
-                                                        <a href="detailpost.php?id=<?= (int) $news['New_ID'] ?>" class="btn btn-outline-primary rounded-pill flex-fill">
+                                                        <a href="index.php?controller=admin&action=detailpost&id=<?= (int)$news['New_ID'] ?>" class="btn btn-outline-primary rounded-pill flex-fill">
                                                             Xem
                                                         </a>
-                                                        <a href="editpost.php?id=<?= (int) $news['New_ID'] ?>" class="btn btn-outline-warning rounded-pill flex-fill">
+                                                        <a href="index.php?controller=admin&action=editpost&id=<?= (int) $news['New_ID'] ?>" class="btn btn-outline-warning rounded-pill flex-fill">
                                                             Sửa
                                                         </a>
                                                     </div>

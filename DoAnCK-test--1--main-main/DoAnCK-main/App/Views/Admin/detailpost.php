@@ -17,7 +17,7 @@ if ($postId <= 0) {
             $deleteStmt->bind_param('i', $postId);
             if ($deleteStmt->execute()) {
                 $deleteStmt->close();
-                header('Location: dashboard.php?deleted=1');
+                header('Location: index.php?controller=admin&action=dashboard&deleted=1');
                 exit;
             }
             $error = 'Xóa bài viết thất bại: ' . $mysqli->error;

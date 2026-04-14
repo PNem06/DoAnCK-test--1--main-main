@@ -1,6 +1,8 @@
 <?php
 namespace App\Models\MonUkou;
+
 class Account {
+
     private int $id;
     private string $user;
     private string $pass;
@@ -9,80 +11,79 @@ class Account {
     private int $role;
     private string $img;
 
-    private ?Watchlist $watchlist = null; // Dấu ? nghĩa là có thể null
-    private array $feedbacks = [];
+    private ?Watchlist $watchlist = null; 
+    private array $feedbacks = []; // ✅ có ;
 
-    // Hàm khởi tạo
-   public function __construct(int $id, string $user, string $pass, string $email, string $tel, int $role, string $img = 'default.png') {
-    $this->id = $id;
-    $this->user = $user;
-    $this->pass = $pass;
-    $this->email = $email;
-    $this->tel = $tel;
-    $this->role = $role;
-    $this->img = $img;
-}
+    // ===== CONSTRUCTOR =====
+    public function __construct(
+        int $id, 
+        string $user, 
+        string $pass, 
+        string $email, 
+        string $tel, 
+        int $role, 
+        string $img = 'default.png'
+    ) {
+        $this->id = $id;
+        $this->user = $user;
+        $this->pass = $pass;
+        $this->email = $email;
+        $this->tel = $tel;
+        $this->role = $role;
+        $this->img = $img;
+    }
 
-public function getRole(): int {
-    return $this->role;
-}
+    // ===== ROLE =====
+    public function getRole(): int {
+        return $this->role;
+    }
 
-    // --- Các phương thức từ sơ đồ ---
+    // ===== LOGIN / LOGOUT =====
     public function login(): bool {
-        // Xử lý kiểm tra user/pass với Database
-        return true; 
+        return true;
     }
 
     public function logout(): void {
-        // Hủy session đăng nhập
+        session_destroy();
     }
 
+    // ===== UPDATE PROFILE =====
     public function updateProfile(string $email, string $tel): void {
         $this->email = $email;
         $this->tel = $tel;
     }
 
-    // --- Getter / Setter cho các thuộc tính cần thiết ---
+    // ===== GETTER =====
     public function getId(): int { return $this->id; }
     public function getUser(): string { return $this->user; }
-    
-    // Gán Watchlist cho Account
+    public function getEmail(): string { return $this->email; }
+    public function getTel(): string { return $this->tel; }
+    public function getImg(): string { return $this->img; }
+
+    // ===== WATCHLIST =====
     public function setWatchlist(Watchlist $watchlist): void {
         $this->watchlist = $watchlist;
     }
 
-    // Thêm Feedback vào danh sách của user
+    // ===== FEEDBACK =====
     public function addFeedback(Feedback $feedback): void {
         $this->feedbacks[] = $feedback;
     }
 
-    // --- Phương thức gọi SP sp_InsertAccount ---
+    // ===== STORED PROCEDURE =====
     public static function insertAccount($db, $id, $user, $pass, $role, $mail, $tel, $img) {
         $sql = "CALL sp_InsertAccount(?, ?, ?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
         return $stmt->execute([$id, $user, $pass, $role, $mail, $tel, $img]);
     }
 
-    // --- Phương thức gọi SP sp_UpdateAccount ---
     public function save($db) {
-    $sql = "CALL sp_UpdateAccount(?, ?, ?)";
-    $stmt = $db->prepare($sql);
-    return $stmt->execute([
-        $this->id,
-        $this->email,
-        $this->tel
-    ]);
+        $sql = "CALL sp_UpdateAccount(?, ?, ?)";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([
+            $this->id,
+            $this->email,
+            $this->tel
+        ]);
+    }
 }
-    public function getEmail(): string {
-    return $this->email;
-}
-
-public function getTel(): string {
-    return $this->tel;
-}
-
-public function getImg(): string {
-    return $this->img;
-}
-}
-?>
